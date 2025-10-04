@@ -1,0 +1,99 @@
+classDiagram
+direction TB
+    class Prestamo {
+	    +id
+	    +libro_id
+	    +usuario
+	    +fecha
+	    +devuelto
+    }
+
+    class SistemaBiblioteca {
+	    -IrepositorioBiblioteca repositorio
+	    +agregar_libro()
+	    +buscar_libro()
+	    +realizar_prestamo()
+	    +devolver_libro()
+	    +obtener_todos_libros()
+	    +obtener_libros_disponibles()
+	    +obtener_prestamos_activos()
+    }
+
+    class Libro {
+	    +id
+	    +titulo
+	    +autor
+	    +isbn
+	    +disponible
+    }
+
+    class BuscadorPorTitulo {
+	    +buscar()
+    }
+
+    class Buscador {
+	    +buscar()
+    }
+
+    class BuscadorPorAutor {
+	    +buscar()
+    }
+
+    class BuscadorPorISBN {
+	    +buscar()
+    }
+
+    class BuscadorPorDisponibilidad {
+	    +buscar()
+    }
+
+    class IRepositorioBiblioteca {
+	    +int contador_libro
+	    +int contador_prestamo
+	    +guardar()
+	    +cargar()
+    }
+
+    class repositorioArchivo {
+	    +int contador_libro
+	    +int contador_prestamo
+	    +str archivo
+	    +guardar()
+	    +cargar()
+    }
+
+    class repositorioMemoria {
+	    +int contador_libro
+	    +int contador_prestamo
+	    +obj redis_client
+	    +guardar()
+	    +cargar()
+    }
+
+    class servicioNotificaciones {
+	    +static enviar_notificacion()
+    }
+    
+    class validadorBiblioteca {
+        +validar_titulo()
+        +validar_autor()
+        +validar_isbn()
+        +validar_usuario()
+    }
+
+	<<Abstract>> Buscador
+	<<Interface>> IRepositorioBiblioteca
+
+    SistemaBiblioteca <|-- Libro
+    SistemaBiblioteca <|-- Prestamo
+    Buscador <|.. BuscadorPorTitulo : inherits
+    Buscador <|.. BuscadorPorAutor : inherits
+    Buscador <|.. BuscadorPorISBN : inherits
+    Buscador <|.. BuscadorPorDisponibilidad : inherits
+    SistemaBiblioteca ..> Buscador
+    SistemaBiblioteca --o IRepositorioBiblioteca
+    IRepositorioBiblioteca <|.. repositorioArchivo
+    IRepositorioBiblioteca <|.. repositorioMemoria
+
+    SistemaBiblioteca ..> servicioNotificaciones
+    SistemaBiblioteca ..> validadorBiblioteca
