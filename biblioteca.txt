@@ -1,0 +1,2 @@
+Libros: 4
+Préstamos: 1
